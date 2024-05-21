@@ -13,7 +13,7 @@ export default function Home() {
     <main>
       <Navbar />
       <section className="h-screen w-full bg-neutral-950 rounded-md !overflow-visible relative flex flex-col items-center antialiased">
-        <div className="absolute inset-0 h-full w-full items-center px-5 py-24" />
+        <div className="absolute inset-0 h-full w-full items-center px-5 py-24 bg-neutral-950" />
         <div className="flex flex-col mt-[-100px] md:mt-[-50px]">
           <ContainerScroll
             titleComponent={
@@ -40,10 +40,10 @@ export default function Home() {
         direction="right"
         speed="slow"
       />
-      <section>
+      <section id="products">
         <HeroParallax products={products} />
       </section>
-      <section className="mt-[-500px]">
+      <section id="pricing" className="mt-[-500px]">
         <LampComponent />
         <div className="flex flex-wrap items-center justify-center flex-col md:flex-row gap-8 -mt-72 my-2">
           <CardContainer className="inter-var">

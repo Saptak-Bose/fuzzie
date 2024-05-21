@@ -21,22 +21,22 @@ export default async function Navbar({}: Props) {
       <nav className="absolute left-[50%] top-[50%] transform translate-x-[-50%] translate-y-[-50%] hidden md:block">
         <ul className="flex items-center gap-4 list-none">
           <li>
-            <Link href="#">Products</Link>
+            <Link href="#products">Products</Link>
           </li>
           <li>
-            <Link href="#">Pricing</Link>
+            <Link href="#pricing">Pricing</Link>
           </li>
           <li>
-            <Link href="#">Clients</Link>
+            <Link href="#clients">Clients</Link>
           </li>
           <li>
-            <Link href="#">Resources</Link>
+            <Link href="#resources">Resources</Link>
           </li>
           <li>
-            <Link href="#">Documentation</Link>
+            <Link href="/docs">Documentation</Link>
           </li>
           <li>
-            <Link href="#">Enterprise</Link>
+            <Link href="#enterprise">Enterprise</Link>
           </li>
         </ul>
       </nav>
