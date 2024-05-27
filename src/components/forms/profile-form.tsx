@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,23 +17,43 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { User } from "@prisma/client";
 
-type Props = {};
+type Props = {
+  user: User;
+  onUpdate?: (name: string) => Promise<User>;
+};
 
-export default function ProfileForm({}: Props) {
+export default function ProfileForm({ user, onUpdate }: Props) {
   const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof EditUserProfileSchema>>({
     mode: "onChange",
     resolver: zodResolver(EditUserProfileSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      name: user.name!,
+      email: user.email,
     },
   });
 
+  const handleSubmit = async (
+    values: z.infer<typeof EditUserProfileSchema>
+  ) => {
+    setIsLoading(true);
+    await onUpdate!(values.name);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    form.reset({ name: user.name!, email: user.email });
+  }, [user]);
+
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-6" onSubmit={() => {}}>
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={form.handleSubmit(handleSubmit)}
+      >
         <FormField
           disabled={isLoading}
           control={form.control}
@@ -42,7 +62,7 @@ export default function ProfileForm({}: Props) {
             <FormItem>
               <FormLabel className="text-lg">Full Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your full name..." {...field} />
+                <Input {...field} placeholder="Enter your full name..." />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -57,9 +77,9 @@ export default function ProfileForm({}: Props) {
               <FormLabel className="text-lg">Email</FormLabel>
               <FormControl>
                 <Input
+                  {...field}
                   placeholder="Enter your email..."
                   type="email"
-                  {...field}
                 />
               </FormControl>
               <FormMessage />
@@ -70,8 +90,8 @@ export default function ProfileForm({}: Props) {
           type="submit"
           disabled={isLoading}
           className={cn(
-            "self-start text-neutral-950 font-bold hover:font-semibold hover:bg-[#2F006B] hover:text-white duration-300 transform",
-            isLoading ? "bg-[#2F006B] text-white font-semibold" : ""
+            "self-start text-neutral-950 font-bold hover:font-semibold hover:bg-[#6C47FF] hover:text-white duration-300 transform",
+            isLoading ? "bg-[#6C47FF] text-white font-semibold" : ""
           )}
         >
           {isLoading ? (

@@ -6,6 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { UserButton } from "@clerk/nextjs";
 
 type Props = {};
 
@@ -39,6 +40,7 @@ export default function Infobar({}: Props) {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
+      <UserButton />
     </div>
   );
 }
