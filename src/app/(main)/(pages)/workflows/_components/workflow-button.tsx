@@ -24,7 +24,7 @@ export default function WorkflowButton({}: Props) {
 
   return (
     <Button
-      className="hover:bg-[#6C47FF] hover:text-white transform duration-300 font-bold"
+      className="hover:bg-[#6C47FF] hover:text-white transform duration-300 font-bold text-primary-foreground hover:font-semibold"
       size="icon"
       onClick={handleClick}
     >
