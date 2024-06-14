@@ -21,7 +21,7 @@ export default function UploadCareButton({ onUpload }: Props) {
   useEffect(() => {
     const handleUpload = async (image: string | any) => {
       const file = await onUpload!(image.detail.cdnUrl);
-      if (file) router.refresh();
+      if (file) return router.refresh();
     };
 
     ctxProviderRef.current?.addEventListener(

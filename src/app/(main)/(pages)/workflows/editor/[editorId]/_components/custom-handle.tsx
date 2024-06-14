@@ -1,10 +1,10 @@
 import { useEditor } from "@/providers/editor-provider";
 import { CSSProperties } from "react";
-import { Handle, HandleProps, ReactFlowState } from "reactflow";
+import { Handle, HandleProps } from "reactflow";
 
 type Props = HandleProps & { style?: CSSProperties };
 
-const selector = (s: ReactFlowState) => ({
+const selector = (s: any) => ({
   nodeInternals: s.nodeInternals,
   edges: s.edges,
 });
@@ -27,9 +27,9 @@ export default function CustomHandle(props: Props) {
           (edge) => edge.target === e.target
         ).length;
 
-        if (targetFromHandleInState === 1) false;
-        if (sourceNode?.type === "Condition") true;
-        if (sourcesFromHandleInState < 1) true;
+        if (targetFromHandleInState === 1) return false;
+        if (sourceNode?.type === "Condition") return true;
+        if (sourcesFromHandleInState < 1) return true;
 
         return false;
       }}

@@ -11,10 +11,6 @@ export default function WorkflowsPage({}: Props) {
         <WorkflowButton />
       </h1>
       <Workflows />
-      <Workflows />
-      <Workflows />
-      <Workflows />
-      <Workflows />
     </div>
   );
 }

@@ -22,7 +22,7 @@ export default function ProfilePicture({
 
   const onRemoveProfileImage = async () => {
     const res = await onDelete!();
-    if (res) router.refresh();
+    if (res) return router.refresh();
   };
 
   return (

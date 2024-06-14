@@ -12,16 +12,14 @@ export default async function EditorPage({}: Props) {
     },
   });
 
-  if (!authUser || !user) redirect("/sign-in");
+  if (!authUser || !user) return redirect("/sign-in");
 
   const workflows = await db.workflows.findMany({
     where: {
-      userId: user.clerkId,
+      userId: authUser.id,
     },
   });
 
-  if (!workflows.length) redirect("/workflows");
-  else redirect(`/workflows/editor/${workflows[0].id}`);
-
-  return null;
+  if (!workflows.length) return redirect("/workflows");
+  else return redirect(`/workflows/editor/${workflows[0].id}`);
 }

@@ -1,27 +1,25 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { EditorNodeType } from "@/lib/types";
 import { useNodeConnections } from "@/providers/connections-provider";
 import { usePathname } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { onCreateNodeEdges, onFlowPublish } from "../_actions/workflow-connections";
+import {
+  onCreateNodeEdges,
+  onFlowPublish,
+} from "../_actions/workflow-connections";
 
 type Props = {
   children: Readonly<React.ReactNode>;
-  edges: {
-    id: string;
-    source: string;
-    target: string;
-  }[];
-  nodes: EditorNodeType[];
+  edges: any[];
+  nodes: any[];
 };
 
 export default function FlowInstance({ children, edges, nodes }: Props) {
   const pathname = usePathname();
   const [isFlow, setIsFlow] = useState([]);
-  const nodeConnection = useNodeConnections();
+  const { nodeConnection } = useNodeConnections();
 
   const onFlowAutomation = useCallback(async () => {
     const flow = await onCreateNodeEdges(
@@ -31,13 +29,32 @@ export default function FlowInstance({ children, edges, nodes }: Props) {
       JSON.stringify(isFlow)
     );
 
-    if (flow) toast.message(flow.message);
+    if (flow) return toast.message(flow.message);
   }, [nodeConnection]);
 
   const onPublishWorkflow = useCallback(async () => {
     const res = await onFlowPublish(pathname.split("/").pop()!, true);
-    if (res) toast.message(res);
+    if (res) return toast.message(res);
   }, []);
+
+  const onAutomateFlow = async () => {
+    const flows: any = [];
+    const connectedEdges = edges.map((edge) => edge.target);
+
+    connectedEdges.map((target) => {
+      nodes.forEach((node) => {
+        if (node.id === target) {
+          flows.push(node.type);
+        }
+      });
+    });
+
+    setIsFlow(flows);
+  };
+
+  useEffect(() => {
+    onAutomateFlow();
+  }, [edges]);
 
   return (
     <div className="flex flex-col gap-2">

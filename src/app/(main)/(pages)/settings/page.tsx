@@ -8,11 +8,11 @@ type Props = {};
 export default async function SettingsPage({}: Props) {
   const authUser = await currentUser();
 
-  if (!authUser) null;
+  if (!authUser) return null;
 
   const user = await db.user.findUnique({
     where: {
-      clerkId: authUser!.id,
+      clerkId: authUser.id,
     },
   });
 
@@ -21,7 +21,7 @@ export default async function SettingsPage({}: Props) {
 
     const res = await db.user.update({
       where: {
-        clerkId: authUser!.id,
+        clerkId: authUser.id,
       },
       data: {
         profileImage: "",
@@ -36,7 +36,7 @@ export default async function SettingsPage({}: Props) {
 
     const res = await db.user.update({
       where: {
-        clerkId: authUser!.id,
+        clerkId: authUser.id,
       },
       data: {
         profileImage: image,
@@ -51,7 +51,7 @@ export default async function SettingsPage({}: Props) {
 
     const res = await db.user.update({
       where: {
-        clerkId: authUser!.id,
+        clerkId: authUser.id,
       },
       data: {
         name,

@@ -8,21 +8,47 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EditorCanvasDefaultCardTypes } from "@/lib/constants";
+import { CONNECTIONS, EditorCanvasDefaultCardTypes } from "@/lib/constants";
 import { EditorCanvasCardTypes, EditorNodeType } from "@/lib/types";
 import { useNodeConnections } from "@/providers/connections-provider";
 import { useEditor } from "@/providers/editor-provider";
 import EditorCanvasIconHelper from "./editor-canvas-card-icon-helper";
-import { onDragStart } from "@/lib/editor-utils";
+import {
+  fetchBotChannels,
+  onConnections,
+  onDragStart,
+} from "@/lib/editor-utils";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import RenderConnectionAccordion from "./render-connection-accordion";
+import RenderOutputAccordion from "./render-output-accordion";
+import { useFuzzieStore } from "@/store";
+import { useEffect } from "react";
 
 type Props = {
   nodes: EditorNodeType[];
 };
 
 export default function EditorCanvasSidebar({ nodes }: Props) {
-  // Connect DB stuff
   const { state } = useEditor();
-  const nodeConnection = useNodeConnections();
+  const { nodeConnection } = useNodeConnections();
+  const { googleFile, setSlackChannels } = useFuzzieStore();
+
+  useEffect(() => {
+    if (state) onConnections(nodeConnection, state, googleFile);
+  }, [state]);
+
+  useEffect(() => {
+    if (nodeConnection.slackNode.slackAccessToken)
+      fetchBotChannels(
+        nodeConnection.slackNode.slackAccessToken,
+        setSlackChannels
+      );
+  }, [nodeConnection]);
 
   return (
     <aside>
@@ -59,6 +85,36 @@ export default function EditorCanvasSidebar({ nodes }: Props) {
                 </CardHeader>
               </Card>
             ))}
+        </TabsContent>
+        <TabsContent value="settings" className="-mt-6">
+          <div className="px-2 py-4 text-center text-xl font-bold">
+            {state.editor.selectedNode.data.title}
+          </div>
+          <Accordion type="multiple">
+            <AccordionItem value="Options" className="border-y px-2">
+              <AccordionTrigger className="!no-underline">
+                Account
+              </AccordionTrigger>
+              <AccordionContent>
+                {CONNECTIONS.map((connection) => (
+                  <RenderConnectionAccordion
+                    key={connection.title}
+                    state={state}
+                    connection={connection}
+                  />
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="Expected Output" className="px-2">
+              <AccordionTrigger className="!no-underline">
+                Action
+              </AccordionTrigger>
+              <RenderOutputAccordion
+                state={state}
+                nodeConnection={nodeConnection}
+              />
+            </AccordionItem>
+          </Accordion>
         </TabsContent>
       </Tabs>
     </aside>

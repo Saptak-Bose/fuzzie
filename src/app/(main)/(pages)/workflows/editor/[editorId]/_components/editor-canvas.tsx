@@ -54,26 +54,20 @@ export default function EditorCanvas({}: Props) {
   }, []);
 
   const onNodesChange = useCallback(
-    (changes: NodeChange[]) => {
-      //  @ts-ignore
-      setNodes((nds) => applyNodeChanges(changes, nds));
-    },
+    (changes: NodeChange[]) =>
+      // @ts-ignore
+      setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
   );
 
   const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) => {
-      // @ts-ignore
-      setEdges((eds) => applyEdgeChanges(changes, eds));
-    },
+    (changes: EdgeChange[]) =>
+      setEdges((eds) => applyEdgeChanges(changes, eds)),
     [setEdges]
   );
 
   const onConnect = useCallback(
-    (params: Edge | Connection) => {
-      // @ts-ignore
-      setEdges((eds) => addEdge(params, eds));
-    },
+    (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
     []
   );
 

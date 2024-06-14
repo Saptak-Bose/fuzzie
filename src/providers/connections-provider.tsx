@@ -130,5 +130,5 @@ export default function ConnectionsProvider({ children }: Props) {
 
 export const useNodeConnections = () => {
   const nodeConnection = useContext(ConnectionsContext);
-  return nodeConnection;
+  return { nodeConnection };
 };

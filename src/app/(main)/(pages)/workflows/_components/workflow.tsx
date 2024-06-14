@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardDescription,
@@ -8,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "sonner";
+import { onFlowPublish } from "../_actions/workflow-connections";
 
 type Props = {
   name: string;
@@ -17,7 +21,11 @@ type Props = {
 };
 
 export default function Workflow({ description, id, name, publish }: Props) {
-  // WIP: Wire up db
+  const onPublishFlow = async (e: any) => {
+    const res = await onFlowPublish(id, e.target.ariaChecked === "false");
+
+    if (res) return toast.message(res);
+  };
 
   return (
     <Card className="flex w-full items-center justify-between">
@@ -54,12 +62,12 @@ export default function Workflow({ description, id, name, publish }: Props) {
       </CardHeader>
       <div className="flex flex-col items-center gap-2 p-4">
         <Label htmlFor="publishing" className="text-muted-foreground">
-          On
+          {publish! ? "On" : "Off"}
         </Label>
         <Switch
           id="publishing"
-          //   onClick={onPublishFlow}
-          //   defaultChecked={publish!}
+          onClick={onPublishFlow}
+          defaultChecked={publish!}
         />
       </div>
     </Card>

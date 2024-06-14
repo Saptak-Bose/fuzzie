@@ -43,11 +43,11 @@ export default function ConnectionCard({
         </div>
       </CardHeader>
       <div className="flex flex-col items-center gap-2 p-4">
-        {/* {connected[type] ? (
+        {connected[type] ? (
           <div className="border-bg-primary rounded-lg border-2 px-3 py-2 font-bold text-[#6C47FF]">
             Connected
           </div>
-        ) : ( */}
+        ) : (
           <Link
             href={
               title == "Discord"
@@ -62,7 +62,7 @@ export default function ConnectionCard({
           >
             Connect
           </Link>
-        {/* )} */}
+        )}
       </div>
     </Card>
   );

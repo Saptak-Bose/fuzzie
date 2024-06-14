@@ -57,7 +57,7 @@ export default function ModalProvider({ children }: Props) {
     setData({});
   };
 
-  if (!isMounted) null;
+  if (!isMounted) return null;
 
   return (
     <ModalContext.Provider value={{ data, isOpen, setClose, setOpen }}>
